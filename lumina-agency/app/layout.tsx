@@ -20,6 +20,10 @@ const robotoFlex = Roboto_Flex({
 export const metadata: Metadata = {
   title: "Transcend Frames | Future-Ready IT & Media",
   description: "Strategy, Design, and Technology in perfect sync.",
+  icons: {
+    icon: '/TF.png',
+    apple: '/TF.png',
+  },
 };
 
 import SocialBubble from "@/components/SocialBubble";
