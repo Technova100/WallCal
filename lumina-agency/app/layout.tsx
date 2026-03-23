@@ -27,6 +27,7 @@ export const metadata: Metadata = {
 };
 
 import SocialBubble from "@/components/SocialBubble";
+import { Providers } from "@/components/Providers";
 
 export default function RootLayout({
   children,
@@ -34,12 +35,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${inter.variable} ${outfit.variable} ${robotoFlex.variable}`}
       >
-        {children}
-        <SocialBubble />
+        <Providers>
+          {children}
+          <SocialBubble />
+        </Providers>
       </body>
     </html>
   );

@@ -124,3 +124,30 @@
     color: var(--hover-color);
     font-size: 0.9rem;
 }
+
+/* ==================== LIGHT MODE STYLES ==================== */
+[data-theme='light'] .software-stack-container h3 {
+    background: linear-gradient(to right, #000, #444);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme='light'] .category-title {
+    color: #1a1a1a;
+}
+
+[data-theme='light'] .software-name {
+    color: #555;
+}
+
+/* Dark glow/shadow effects on hover in light mode */
+[data-theme='light'] .software-item:hover .software-icon {
+    filter: grayscale(0) drop-shadow(0 0 20px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.3));
+}
+
+[data-theme='light'] .software-item:hover .software-name {
+    color: #000;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    font-weight: 700;
+}

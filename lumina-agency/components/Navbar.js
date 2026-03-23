@@ -5,13 +5,21 @@ import GlassSurface from '@/components/GlassSurface';
 
 import StarBorder from '@/components/StarBorder';
 
+import { useTheme } from 'next-themes';
+import { Sun, Moon } from 'lucide-react';
+
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+  const [pastHero, setPastHero] = React.useState(false);
 
   React.useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      setPastHero(window.scrollY > window.innerHeight - 100); // Transition just before next section
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -26,7 +34,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={`main-navbar ${isScrolled ? 'scrolled' : ''} ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+    <nav className={`main-navbar ${isScrolled ? 'scrolled' : ''} ${isMobileMenuOpen ? 'mobile-open' : ''} ${mounted && resolvedTheme === 'light' && !pastHero ? 'force-white-text' : ''}`}>
       <GlassSurface
         borderRadius={50}
         displace={15}
@@ -69,9 +77,26 @@ export default function Navbar() {
             <li className="nav-item" onClick={() => scrollTo('contact')}>Contact</li>
           </ul>
 
-          <StarBorder as="button" className="filled quote-btn" onClick={() => window.open('https://topmate.io/manan_shah05/', '_blank')} color="#fff" speed="4s">
-            Book a Call
-          </StarBorder>
+          <div className="nav-actions">
+            <StarBorder
+              as="button"
+              className={`quote-btn ${mounted && resolvedTheme === 'light' ? '' : 'filled'}`}
+              onClick={() => window.open('https://topmate.io/manan_shah05/', '_blank')}
+              color={mounted && resolvedTheme === 'light' ? "black" : "white"}
+              speed="4s"
+            >
+              Book a Call
+            </StarBorder>
+
+            <button
+              className="theme-toggle"
+              onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+              aria-label="Toggle Theme"
+              data-tooltip={mounted ? (resolvedTheme === 'dark' ? "Switch to Light Mode" : "Switch to Dark Mode") : "Toggle Theme"}
+            >
+              {mounted ? (resolvedTheme === 'dark' ? <Moon size={20} /> : <Sun size={20} />) : <div style={{ width: 20, height: 20 }} />}
+            </button>
+          </div>
 
         </div>
       </GlassSurface>

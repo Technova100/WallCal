@@ -63,3 +63,7 @@
   border-top: none;
   border-radius: 0 0 2px 0;
 }
+
+.focus-word {
+  color: #ffffff;
+}

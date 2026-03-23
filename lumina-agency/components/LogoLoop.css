@@ -51,11 +51,11 @@
 
 @keyframes logoloop-scroll {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
@@ -85,6 +85,8 @@
   margin-right: var(--logoloop-gap);
   font-size: var(--logoloop-logoHeight);
   line-height: 1;
+  /* Hardware acceleration hint */
+  transform: translate3d(0, 0, 0);
 }
 
 .logoloop--vertical .logoloop__item {
@@ -113,7 +115,6 @@
   display: block;
   object-fit: contain;
   /* Keep logos visible inside the circle */
-  image-rendering: -webkit-optimize-contrast;
   -webkit-user-drag: none;
   /* Subtle cinematic look */
   opacity: 0.7;
@@ -122,18 +123,18 @@
   padding: 4px;
   background: white;
   /* Optional: white background to make them look like uniform tokens if they are transparent PNGs */
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-  /* Subtle glow */
-  transform: translateZ(0);
+  /* Remove box-shadow for performance */
   /* GPU acceleration */
   backface-visibility: hidden;
   /* Prevent flicker */
+  transform: translateZ(0);
 }
 
 .logoloop__item:hover img {
   opacity: 1;
   transform: scale(1.1);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+  /* Only show shadow on hover, simpler */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .logoloop--scale-hover .logoloop__item {

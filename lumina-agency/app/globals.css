@@ -12,6 +12,43 @@
     --nav-width: 1000px;
     --container-width: 1200px;
     --section-padding: 120px 0;
+    --invert-icon: invert(1);
+    /* Default is white/inverted for dark mode if using black images */
+}
+
+[data-theme='light'] {
+    --bg-color: #f0f2f5;
+    --text-main: #1a1a1a;
+    --text-muted: #525252;
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --glass-blur: blur(20px);
+    --glass-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+    --brand-gradient: linear-gradient(135deg, #1a1a1a 0%, #525252 100%);
+    --invert-icon: invert(0);
+    /* Black original for light mode */
+}
+
+/* Light Mode Vignette Effect */
+[data-theme='light'] body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.07) 0%, transparent 10%, transparent 90%, rgba(0, 0, 0, 0.07) 100%);
+}
+
+/* Light Mode Process Lines */
+[data-theme='light'] .track-base {
+    background: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme='light'] .process-card:not(:last-child)::after {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.1) 100%) !important;
 }
 
 * {
@@ -30,6 +67,7 @@ body {
     overflow-x: hidden;
     line-height: 1.6;
     width: 100%;
+    transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 h1,
@@ -64,6 +102,15 @@ ul {
 }
 
 /* Glass Panel */
+/* Light Theme Variables Override for "Inverted" Sections */
+/* In light mode, we want standard sections (black bg in dark mode) to be white bg with black text */
+/* And "glass" or "white" sections to be inverted to black? 
+   The request says: "make the black bg white and white text to black" for sections below services.
+   This is what standard Light Mode usually implies for a dark-default site. 
+   Our current light variables do this globally: --bg-color is #f0f2f5 (White-ish). 
+   So standard sections using var(--bg-color) are already White in Light Mode.
+   We just need to ensure the text contrasts correctly.
+*/
 .glass-panel {
     background: rgba(5, 5, 5, 0.6);
     border: 1px solid var(--glass-border);
@@ -71,6 +118,12 @@ ul {
     -webkit-backdrop-filter: blur(10px);
     border-radius: 16px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+[data-theme='light'] .glass-panel {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #000;
 }
 
 /* UPDATED NAV CSS */
@@ -106,30 +159,37 @@ ul {
 .nav-inner {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 12px 40px;
     height: 100%;
     transition: opacity 0.3s ease;
+    position: relative;
 }
 
 .logo {
     font-size: 1rem;
     font-weight: 900;
-    letter-spacing: 1px;
-    color: white;
+    letter-spacing: -0.5px;
+    color: var(--text-main);
+    /* Auto-switch based on theme */
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     white-space: nowrap;
+    position: absolute;
+    left: 20px;
 }
 
 .logo span {
     width: 12px;
     height: 12px;
-    background: white;
+    background: var(--text-main);
+    /* Auto-switch based on theme */
     border-radius: 50%;
-    box-shadow: 0 0 10px white;
+    box-shadow: 0 0 10px var(--text-main);
+    /* Auto-switch based on theme */
+    transform: translateY(1px);
 }
 
 .nav-links {
@@ -139,18 +199,54 @@ ul {
     list-style: none;
     margin: 0;
     padding: 0;
+    /* removed extra translateX to keep centered */
+}
+
+.quote-btn .inner-content {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: absolute;
+    right: 20px;
 }
 
 .nav-item {
     font-size: 0.9rem;
     font-weight: 500;
-    color: white;
+    color: var(--text-main);
+    /* Auto-switch based on theme */
+    /* Always white */
     position: relative;
     cursor: pointer;
 }
 
 .nav-item:hover {
-    color: white;
+    color: var(--text-main);
+}
+
+/* Navbar Text Overrides for Light Mode on Hero */
+.force-white-text .logo,
+.force-white-text .logo span,
+.force-white-text .nav-item,
+.force-white-text .theme-toggle {
+    color: #fff !important;
+    background: transparent;
+    /* For logo span if needed, check below */
+}
+
+/* Specific handling for logo dot which uses background color */
+.force-white-text .logo span {
+    background: #fff !important;
+    box-shadow: 0 0 10px #fff !important;
+}
+
+.force-white-text .nav-item:hover {
+    color: #fff !important;
 }
 
 .nav-item::after {
@@ -174,7 +270,7 @@ ul {
     top: 150%;
     left: 50%;
     transform: translateX(-50%);
-    background: #0f0f0f;
+    background: var(--bg-color);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
     padding: 10px;
@@ -199,8 +295,8 @@ ul {
 }
 
 .dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
+    background: var(--glass-border);
+    color: var(--text-main);
 }
 
 /* Mobile Triggers (Hidden on Desktop) */
@@ -216,9 +312,9 @@ ul {
 .trigger-bar {
     width: 40px;
     height: 4px;
-    background: white;
+    background: var(--text-main);
     border-radius: 4px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 .mobile-close-btn {
@@ -229,11 +325,11 @@ ul {
 .mobile-menu-btn {
     display: none;
     /* Desktop hidden */
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
     padding: 6px 16px;
     border-radius: 20px;
-    color: white;
+    color: var(--text-main);
     font-size: 0.9rem;
     cursor: pointer;
 }
@@ -271,7 +367,7 @@ ul {
     }
 
     .nav-inner {
-        padding: 10px 20px;
+        padding: 10px 25px;
     }
 
     .nav-links,
@@ -385,14 +481,18 @@ ul {
     line-height: 1.1;
     margin-bottom: 24px;
     background: linear-gradient(to bottom, #ffffff, #666666);
-
     background-clip: text;
-    /* standard */
     -webkit-background-clip: text;
-    /* webkit */
     -webkit-text-fill-color: transparent;
-
     letter-spacing: -2px;
+}
+
+/* Force Dark Hero even in Light Mode */
+[data-theme='light'] .hero h1 {
+    background: linear-gradient(to bottom, #ffffff, #666666);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .text-gradient {
@@ -406,7 +506,8 @@ ul {
 
 .hero p {
     font-size: 1.2rem;
-    color: var(--text-muted);
+    color: #9CA3AF;
+    /* Always muted gray/white */
     margin-bottom: 40px;
     font-weight: 300;
 }
@@ -444,9 +545,19 @@ ul {
     transition: 0.3s;
 }
 
+[data-theme='light'] .btn-glow {
+    color: var(--text-main);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
 .btn-glow:hover {
     border-color: white;
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='light'] .btn-glow:hover {
+    border-color: var(--text-main);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
 }
 
 /* --- SERVICES --- */
@@ -478,10 +589,23 @@ ul {
     transform: translateY(-10px);
 }
 
+[data-theme='light'] .service-card:hover {
+    border-color: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    /* Stronger contrast glow */
+}
+
+/* Ensure Service Icons are dark in light mode for visibility */
+[data-theme='light'] .service-icon {
+    color: #1a1a1a;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
 .service-icon {
     font-size: 2rem;
     margin-bottom: 20px;
-    color: white;
+    color: var(--text-main);
     transition: 0.3s;
 }
 
@@ -551,9 +675,19 @@ ul {
     cursor: pointer;
 }
 
+[data-theme='light'] .view-case-btn {
+    color: var(--text-main);
+    border-color: var(--text-main);
+}
+
 .view-case-btn:hover {
     background: white;
     color: black;
+}
+
+[data-theme='light'] .view-case-btn:hover {
+    background: var(--text-main);
+    color: white;
 }
 
 .project-item:hover .view-case-btn {
@@ -697,9 +831,9 @@ ul {
     width: 100%;
     background: transparent;
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid var(--glass-border);
     padding: 15px 0;
-    color: white;
+    color: var(--text-main);
     font-size: 1rem;
     outline: none;
     transition: 0.3s;
@@ -798,6 +932,24 @@ ul {
     background: linear-gradient(to bottom, #7928CA, #FF0080);
     box-shadow: 0 0 20px #FF0080;
     border-radius: 4px;
+}
+
+.theme-toggle {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+}
+
+.theme-toggle:hover {
+    background: var(--glass-border);
 }
 
 /* --- THE GRID LAYOUT --- */
@@ -1130,4 +1282,221 @@ ul {
     margin-bottom: 3rem;
     text-align: center;
     text-transform: uppercase;
+}
+
+[data-theme='light'] .section-title {
+    background: linear-gradient(to right, #000000, #444444);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #000;
+    /* Fallback */
+}
+
+/* Ensure sub-headings/paragraphs under section titles are black in light mode */
+[data-theme='light'] .process-section p,
+[data-theme='light'] .services p,
+[data-theme='light'] .hero p {
+    color: #1a1a1a;
+}
+
+/* FORCING WHITE TEXT IN DARK CARDS (Even in Light Mode) */
+/* Assuming the steps cards use .process-card or similar, or .glass-panel if generalized */
+/* Based on image, these are likely the 'steps' from Process section */
+.step-card h3,
+.step-card p,
+.service-card h3,
+.service-card p {
+    transition: 0.3s;
+}
+
+[data-theme='light'] .step-card,
+[data-theme='light'] .service-card {
+    background: #000 !important;
+    /* Force black bg if not already */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='light'] .step-card h3,
+[data-theme='light'] .step-card p,
+[data-theme='light'] .service-card h3,
+[data-theme='light'] .service-card p,
+[data-theme='light'] .aesthetic-number {
+    /* Force Number White in Light Mode */
+    color: #ffffff !important;
+}
+
+[data-theme='light'] .aesthetic-number {
+    -webkit-text-stroke: 1px #ffffff !important;
+    opacity: 0.3;
+    /* Keep it subtle usually, but white */
+}
+
+/* Hover Glow for White Text */
+/* Hover Glow for White Text */
+.step-card:hover h3,
+.step-card:hover p,
+/* Added paragraph glow */
+.service-card:hover h3,
+.service-card:hover p,
+/* Added paragraph glow */
+.step-card:hover .aesthetic-number {
+    /* Added number glow */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
+    color: #fff !important;
+    /* Ensure it stays white */
+}
+
+/* Ensure numbers turn white on hover in general */
+.step-card:hover .aesthetic-number {
+    -webkit-text-stroke: 1px #fff;
+    opacity: 0.8;
+}
+
+/* Additional selectors for process card content */
+[data-theme='light'] .process-card-content h4,
+[data-theme='light'] .process-card-content p {
+    color: #ffffff !important;
+}
+
+.step-card:hover .process-card-content h4,
+.step-card:hover .process-card-content p {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    /* Increased gap */
+    position: absolute;
+    right: 40px;
+}
+
+/* Ensure theme toggle switches color */
+.theme-toggle {
+    color: var(--text-main) !important;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+@media (max-width: 768px) {
+    .nav-actions {
+        display: none;
+    }
+
+    .main-navbar.mobile-open .nav-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        align-items: center;
+    }
+}
+
+/* --- TOOLTIP STYLES FOR THEME TOGGLE --- */
+.theme-toggle {
+    position: relative;
+}
+
+.theme-toggle[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 130%;
+    /* Position below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 15, 15, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 1500;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeInTooltip 0.2s ease-out forwards;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    letter-spacing: 0.5px;
+}
+
+.theme-toggle[data-tooltip]:hover::before {
+    /* Slight arrow pointer */
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent rgba(15, 15, 15, 0.9) transparent;
+    opacity: 0;
+    animation: fadeInTooltip 0.2s ease-out forwards;
+    z-index: 1500;
+}
+
+[data-theme='light'] .theme-toggle[data-tooltip]:hover::after {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .theme-toggle[data-tooltip]:hover::before {
+    border-color: transparent transparent rgba(255, 255, 255, 0.95) transparent;
+}
+
+@keyframes fadeInTooltip {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.fade-transition {
+    height: 150px;
+    width: 100%;
+    background: linear-gradient(to bottom, #000000 0%, transparent 100%);
+    margin-bottom: -150px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* --- SOCIAL BUTTONS --- */
+.social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.social-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+[data-theme='light'] .social-btn {
+    background: rgba(0, 0, 0, 0.05);
+    /* Light gray background */
+    color: #000;
+    /* Black icon */
+}
+
+[data-theme='light'] .social-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
 }

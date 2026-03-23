@@ -46,12 +46,16 @@ const preloadImages = async urls => {
                 new Promise(resolve => {
                     const img = new Image();
                     img.src = src;
-                    // Whether success or error, we resolve to avoid blocking
-                    img.onload = () => resolve();
-                    img.onerror = () => resolve();
+                    img.onload = () => resolve({ src, width: img.naturalWidth, height: img.naturalHeight });
+                    img.onerror = () => resolve({ src, width: 1, height: 1 });
                 })
         )
-    );
+    ).then(results => {
+        return results.reduce((acc, curr) => {
+            acc[curr.src] = curr;
+            return acc;
+        }, {});
+    });
 };
 
 const Masonry = ({
@@ -68,12 +72,12 @@ const Masonry = ({
     const columns = useMedia(
         ['(min-width:1500px)', '(min-width:1000px)', '(min-width:600px)', '(min-width:400px)'],
         [5, 4, 3, 2],
-        2 // Default to 2 columns for smaller screens
+        2
     );
 
     const [containerRef, { width }] = useMeasure();
     const [imagesReady, setImagesReady] = useState(false);
-    // Calculate height to set on container to avoid collapse
+    const [imageDims, setImageDims] = useState({});
     const [containerHeight, setContainerHeight] = useState(0);
 
     const getInitialPosition = (item) => {
@@ -89,7 +93,7 @@ const Masonry = ({
 
         switch (direction) {
             case 'top': return { x: item.x, y: -200 };
-            case 'bottom': return { x: item.x, y: 500 }; // Use a relative offset instead of full window height
+            case 'bottom': return { x: item.x, y: 500 };
             case 'left': return { x: -200, y: item.y };
             case 'right': return { x: window.innerWidth + 200, y: item.y };
             default: return { x: item.x, y: item.y + 100 };
@@ -98,12 +102,31 @@ const Masonry = ({
 
     useEffect(() => {
         if (items && items.length > 0) {
-            preloadImages(items.map(i => i.img)).then(() => setImagesReady(true));
+            const loadImages = async () => {
+                const urls = items.map(i => i.img);
+                const results = await Promise.all(
+                    urls.map(src => new Promise(resolve => {
+                        const img = new Image();
+                        img.src = src;
+                        img.onload = () => resolve({ src, width: img.naturalWidth, height: img.naturalHeight });
+                        img.onerror = () => resolve({ src, width: 1, height: 1 });
+                    }))
+                );
+
+                const dims = results.reduce((acc, curr) => {
+                    acc[curr.src] = curr;
+                    return acc;
+                }, {});
+
+                setImageDims(dims);
+                setImagesReady(true);
+            };
+            loadImages();
         }
     }, [items]);
 
     const grid = useMemo(() => {
-        if (!width || !items || items.length === 0) return [];
+        if (!width || !items || items.length === 0 || !imagesReady) return [];
 
         const colHeights = new Array(columns).fill(0);
         const columnWidth = width / columns;
@@ -111,8 +134,18 @@ const Masonry = ({
         const computedGrid = items.map(child => {
             const col = colHeights.indexOf(Math.min(...colHeights));
             const x = columnWidth * col;
-            // Use original height logic from snippet
-            const height = child.height / 2;
+
+            // Calculate height based on actual aspect ratio if available
+            const dim = imageDims[child.img];
+            let height = child.height / 2; // Fallback to prop
+
+            if (dim && dim.width > 0) {
+                // Aspect Ratio = H / W
+                // New Height = New Width * (H / W)
+                // New Width = columnWidth
+                height = columnWidth * (dim.height / dim.width);
+            }
+
             const y = colHeights[col];
 
             colHeights[col] += height;
@@ -123,7 +156,7 @@ const Masonry = ({
         setContainerHeight(Math.max(...colHeights));
         return computedGrid;
 
-    }, [columns, items, width]);
+    }, [columns, items, width, imagesReady, imageDims]);
 
     const hasMounted = useRef(false);
 
@@ -231,7 +264,7 @@ const Masonry = ({
                         onMouseEnter={e => handleMouseEnter(e, item)}
                         onMouseLeave={e => handleMouseLeave(e, item)}
                     >
-                        <div className="item-img" style={{ backgroundImage: `url(${item.img})` }}>
+                        <div className="item-img" style={{ backgroundImage: `url(${item.img})`, backgroundSize: 'cover' }}>
                             {colorShiftOnHover && (
                                 <div
                                     className="color-overlay"

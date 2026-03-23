@@ -7,7 +7,24 @@ import Reveal from '@/components/RevealWrapper';
 import FAQ from '@/components/FAQ';
 import ProcessTimeline from '@/components/ProcessTimeline';
 import SoftwareStack from '@/components/SoftwareStack';
-import Masonry from '@/components/Masonry';
+import BentoGallery from '@/components/BentoGallery';
+
+// ... (existing imports)
+
+// Inside the component return:
+{/* --- SELECTED WORKS (BENTO GALLERY) --- */ }
+<section id="work" style={{ padding: '8rem 0', minHeight: '100vh' }}>
+  <div className="container">
+    <Reveal>
+      <h2 className="section-title">GALLERY</h2>
+    </Reveal>
+  </div>
+
+  {/* Bento Grid Container */}
+  <div style={{ padding: '0 2rem', marginTop: '2rem' }}>
+    <BentoGallery />
+  </div>
+</section>
 import SpotlightCard from '@/components/SpotlightCard'; // <-- New React Bits Component
 import SplashCursor from '@/components/SplashCursor'; //
 import LogoLoop from "@/components/LogoLoop";
@@ -30,7 +47,7 @@ export default function Home() {
     e.preventDefault();
     const subject = `New Project Inquiry from ${formData.name}`;
     const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`;
-    window.location.href = `mailto:transcendframes@gmail.com,mananshah.ms.01@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:transcendframes@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -100,7 +117,7 @@ export default function Home() {
                 Defy the Ordinary.
               </h2>
 
-              <p style={{ maxWidth: 900, color: 'var(--text-muted)', margin: '0 auto', textAlign: 'center', fontSize: '14px' }}>
+              <p style={{ maxWidth: 900, color: '#9CA3AF', margin: '0 auto', textAlign: 'center', fontSize: '14px' }}>
                 Strategy, design, and technology in perfect sync crafting bold digital experiences that scale.
               </p>
 
@@ -120,6 +137,7 @@ export default function Home() {
       <LogoLoop
         direction="right"
         speed={60}
+        style={{ backgroundColor: '#000' }}
         logos={[
           { src: "/Streax.png", alt: "Streax" },
           { src: "/Glassmate.png", alt: "Glassmate" },
@@ -128,6 +146,8 @@ export default function Home() {
           { src: "Stratezic.png", alt: "Stratezic" },
         ]}
       />
+
+      <div className="fade-transition" />
 
       {/* --- CHROMA GRID SHOWCASE --- */}
       <section style={{ padding: '4rem 0' }} id="services">
@@ -307,7 +327,13 @@ export default function Home() {
               gradient: 'linear-gradient(255deg, #EF4444, #000)',
               url: '#',
               videos: [
-                { title: 'Logo Animation Showcase', src: 'https://youtu.be/V_-0SKy9Xcw', thumbnail: 'https://img.youtube.com/vi/V_-0SKy9Xcw/hqdefault.jpg', type: 'youtube' }
+                { title: 'Logo Animation Showcase', src: 'https://youtu.be/V_-0SKy9Xcw', thumbnail: 'https://img.youtube.com/vi/V_-0SKy9Xcw/hqdefault.jpg', type: 'youtube' },
+                { title: 'Logo Animation 1', src: 'https://youtu.be/cU4hbs02sZA', thumbnail: 'https://img.youtube.com/vi/cU4hbs02sZA/hqdefault.jpg', type: 'youtube' },
+                { title: 'Logo Animation 2', src: 'https://youtu.be/xKwmE6_RFPA', thumbnail: 'https://img.youtube.com/vi/xKwmE6_RFPA/hqdefault.jpg', type: 'youtube' },
+                { title: 'Logo Animation 3', src: 'https://youtu.be/goJ3IM1JMnE', thumbnail: 'https://img.youtube.com/vi/goJ3IM1JMnE/hqdefault.jpg', type: 'youtube' },
+                { title: 'Logo Animation 4', src: 'https://youtu.be/iVw6gCqjeY4', thumbnail: 'https://img.youtube.com/vi/iVw6gCqjeY4/hqdefault.jpg', type: 'youtube' },
+                { title: 'Logo Animation 5', src: 'https://youtu.be/EZtVIBG28B8', thumbnail: 'https://img.youtube.com/vi/EZtVIBG28B8/hqdefault.jpg', type: 'youtube' },
+                { title: 'Logo Animation 6', src: 'https://youtu.be/dTQxdWyHY4s', thumbnail: 'https://img.youtube.com/vi/dTQxdWyHY4s/hqdefault.jpg', type: 'youtube' }
               ]
             },
             {
@@ -398,7 +424,10 @@ export default function Home() {
               handle: 'Sound / Mixing',
               borderColor: '#22C55E',
               gradient: 'linear-gradient(145deg, #22C55E, #000)',
-              url: '#'
+              url: '#',
+              videos: [
+                { title: 'Virtual DJ Setup', src: 'https://youtu.be/i7HhDd_yvVk', thumbnail: 'https://img.youtube.com/vi/i7HhDd_yvVk/hqdefault.jpg', type: 'youtube' }
+              ]
             }
           ]}
         />
@@ -410,7 +439,7 @@ export default function Home() {
         <SoftwareStack />
       </section>
 
-      {/* --- SELECTED WORKS (MASONRY) --- */}
+      {/* --- SELECTED WORKS (BENTO GALLERY) --- */}
       <section id="work" style={{ padding: '8rem 0', minHeight: '100vh' }}>
         <div className="container">
           <Reveal>
@@ -418,34 +447,9 @@ export default function Home() {
           </Reveal>
         </div>
 
-        {/* Masonry Layout Container */}
+        {/* Bento Grid Container */}
         <div style={{ padding: '0 2rem', marginTop: '2rem' }}>
-          <Masonry
-            items={[
-              { id: 1, url: '/GALLERY/1.png', img: '/GALLERY/1.png', height: 600 },
-              { id: 2, url: '/GALLERY/Copy%20of%20wallpaper%202.png', img: '/GALLERY/Copy%20of%20wallpaper%202.png', height: 800 },
-              { id: 3, url: '/GALLERY/Copy%20of%20wallpaper%203.png', img: '/GALLERY/Copy%20of%20wallpaper%203.png', height: 500 },
-              { id: 4, url: '/GALLERY/Copy%20of%20wallpaper%204.png', img: '/GALLERY/Copy%20of%20wallpaper%204.png', height: 700 },
-              { id: 5, url: '/GALLERY/Copy%20of%20wallpaper%205.png', img: '/GALLERY/Copy%20of%20wallpaper%205.png', height: 600 },
-              { id: 6, url: '/GALLERY/Copy%20of%20wallpaper%206.png', img: '/GALLERY/Copy%20of%20wallpaper%206.png', height: 400 },
-              { id: 7, url: '/GALLERY/Copy%20of%20wallpaper%207.png', img: '/GALLERY/Copy%20of%20wallpaper%207.png', height: 800 },
-              { id: 8, url: '/GALLERY/Copy%20of%20wallpaper%208.png', img: '/GALLERY/Copy%20of%20wallpaper%208.png', height: 500 },
-              { id: 9, url: '/GALLERY/Copy%20of%20wallpaper%209.png', img: '/GALLERY/Copy%20of%20wallpaper%209.png', height: 700 },
-              { id: 10, url: '/GALLERY/Copy%20of%20wallpaper%2010.png', img: '/GALLERY/Copy%20of%20wallpaper%2010.png', height: 600 },
-              { id: 11, url: '/GALLERY/Copy%20of%20wallpaper%2011.png', img: '/GALLERY/Copy%20of%20wallpaper%2011.png', height: 500 },
-              { id: 12, url: '/GALLERY/Copy%20of%20wallpaper%2012.png', img: '/GALLERY/Copy%20of%20wallpaper%2012.png', height: 800 },
-              { id: 13, url: '/GALLERY/Copy%20of%20wallpaper%2013.png', img: '/GALLERY/Copy%20of%20wallpaper%2013.png', height: 600 },
-              { id: 14, url: '/GALLERY/Copy%20of%20wallpaper%2014.png', img: '/GALLERY/Copy%20of%20wallpaper%2014.png', height: 700 },
-              { id: 15, url: '/GALLERY/Copy%20of%20wallpaper%2015.png', img: '/GALLERY/Copy%20of%20wallpaper%2015.png', height: 500 },
-              { id: 16, url: '/GALLERY/Copy%20of%20wallpaper%2016.png', img: '/GALLERY/Copy%20of%20wallpaper%2016.png', height: 800 },
-              { id: 17, url: '/GALLERY/Copy%20of%20wallpaper%2017.png', img: '/GALLERY/Copy%20of%20wallpaper%2017.png', height: 600 },
-              { id: 18, url: '/GALLERY/Copy%20of%20wallpaper%2018.png', img: '/GALLERY/Copy%20of%20wallpaper%2018.png', height: 400 },
-              { id: 19, url: '/GALLERY/Copy%20of%20wallpaper%2019.png', img: '/GALLERY/Copy%20of%20wallpaper%2019.png', height: 700 },
-              { id: 20, url: '/GALLERY/Copy%20of%20wallpaper%2020.png', img: '/GALLERY/Copy%20of%20wallpaper%2020.png', height: 600 }
-            ]}
-            animateFrom="bottom"
-            stagger={0.1}
-          />
+          <BentoGallery />
         </div>
       </section>
 
@@ -502,7 +506,7 @@ export default function Home() {
         <Reveal className="about-split">
           <div>
             <h2 style={{ fontSize: '3rem', marginBottom: '10px' }}>Manan Shah</h2>
-            <h3 style={{ fontSize: '1.2rem', color: '#fff', marginBottom: '20px', fontWeight: 500 }}>Hi, I’m a Creative Designer & Visual Editor</h3>
+            <h3 style={{ fontSize: '1.2rem', color: 'var(--text-main)', marginBottom: '20px', fontWeight: 500 }}>Hi, I’m a Creative Designer & Visual Editor</h3>
             <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', marginBottom: '30px' }}>
               I turn ideas into polished visuals that communicate, captivate, and convert. From branding and ad creatives to cinematic edits, I bring a detail-driven approach that blends design strategy with storytelling. My goal? To make every frame feel intentional and every project look world-class.
             </p>
@@ -524,22 +528,22 @@ export default function Home() {
                 <div>
                   <h2>Let&apos;s Talk</h2>
                   <p style={{ color: 'var(--text-muted)', marginTop: '10px', marginBottom: '30px' }}>Ready to start your transformation?</p>
-                  <p style={{ lineHeight: 1.8 }}>transcendframes@gmail.com<br />mananshah.ms.01@gmail.com</p>
+                  <p style={{ lineHeight: 1.8 }}>transcendframes@gmail.com</p>
                 </div>
                 <div style={{ display: 'flex', gap: '15px', marginTop: 'auto', paddingTop: '30px' }}>
-                  <a href="https://www.instagram.com/transcend.frames/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', color: '#fff', transition: 'all 0.3s' }}>
+                  <a href="https://www.instagram.com/transcend.frames/" target="_blank" rel="noopener noreferrer" className="social-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
                   </a>
-                  <a href="https://www.linkedin.com/company/transcend-frames/?viewAsMember=true" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', color: '#fff', transition: 'all 0.3s' }}>
+                  <a href="https://www.linkedin.com/company/transcend-frames/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="social-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>
                   </a>
-                  <a href="https://www.youtube.com/@mananshahstudio" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', color: '#fff', transition: 'all 0.3s' }}>
+                  <a href="https://www.youtube.com/@mananshahstudio" target="_blank" rel="noopener noreferrer" className="social-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" /><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" /></svg>
                   </a>
-                  <a href="https://behance.net" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', color: '#fff', transition: 'all 0.3s' }}>
-                    <img src="/BehanceLogo.png" alt="Behance" width="20" height="20" style={{ objectFit: 'contain', filter: 'invert(1)' }} />
+                  <a href="https://behance.net" target="_blank" rel="noopener noreferrer" className="social-btn">
+                    <img src="/BehanceLogo.png" alt="Behance" width="20" height="20" style={{ objectFit: 'contain', filter: 'var(--invert-icon)' }} />
                   </a>
-                  <a href="https://linktr.ee/MananPortfolio" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', color: '#fff', transition: 'all 0.3s' }}>
+                  <a href="https://linktr.ee/MananPortfolio" target="_blank" rel="noopener noreferrer" className="social-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>
                   </a>
                 </div>
@@ -597,11 +601,11 @@ export default function Home() {
           {/* Left: Brand */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <img src="/globe.svg" width="24" height="24" alt="Icon" style={{ filter: 'invert(1)' }} />
-            <span style={{ fontWeight: 600, fontSize: '1.1rem' }}>Transcend Frames 2026</span>
+            <span style={{ fontWeight: 600, fontSize: '1.1rem', color: '#fff' }}>Transcend Frames 2026</span>
           </div>
 
           {/* Center: Credits */}
-          <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+          <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.9rem' }}>
             Made with <span style={{ color: '#F43F5E' }}>&hearts;</span> by Manan Shah
           </div>
 

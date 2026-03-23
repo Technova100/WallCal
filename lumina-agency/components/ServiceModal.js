@@ -25,7 +25,8 @@ export default function ServiceModal({ isOpen, onClose, service }) {
             return url; // Already correct
         }
 
-        return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
+        // Optimized params: no cookies, no related videos from others, modest branding, JS API enabled, playsinline for mobile
+        return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&enablejsapi=1` : url;
     };
 
     const getGoogleDriveEmbedUrl = (url) => {
@@ -265,8 +266,10 @@ export default function ServiceModal({ isOpen, onClose, service }) {
                                 src={getEmbedUrl(selectedVideo.src)}
                                 title={selectedVideo.title}
                                 frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerPolicy="strict-origin-when-cross-origin"
                                 allowFullScreen
+                                loading="lazy"
                             />
                         ) : (
                             <video

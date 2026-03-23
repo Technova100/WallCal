@@ -254,3 +254,83 @@
         font-size: 3rem;
     }
 }
+
+/* ==================== LIGHT MODE STYLES ==================== */
+[data-theme='light'] .process-title {
+    background: linear-gradient(to right, #000, #444);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme='light'] .process-subtitle {
+    color: #1a1a1a;
+}
+
+/* INVERT: White background with dark text in light mode */
+[data-theme='light'] .process-card-inner {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme='light'] .process-card-title {
+    color: #000000 !important;
+}
+
+[data-theme='light'] .process-card-desc {
+    color: #555 !important;
+}
+
+[data-theme='light'] .process-card-number {
+    color: rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme='light'] .process-icon-wrapper {
+    color: #000 !important;
+}
+
+/* Hover effects - darker text with subtle shadow in light mode */
+[data-theme='light'] .process-card:hover .process-card-inner {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .process-card:hover .process-card-title,
+[data-theme='light'] .process-card:hover .process-card-desc {
+    color: #000000 !important;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .process-card:hover .process-card-number {
+    color: rgba(0, 0, 0, 0.4) !important;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Invert button colors for light mode */
+[data-theme='light'] .btn-process-primary {
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+}
+
+[data-theme='light'] .btn-process-primary:hover {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+}
+
+[data-theme='light'] .btn-process-secondary {
+    background: transparent;
+    color: #000;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='light'] .btn-process-secondary:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: #000;
+}
+
+[data-theme='light'] .process-tag {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333;
+}
