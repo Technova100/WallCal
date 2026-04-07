@@ -25,7 +25,7 @@ export default function DigitalClock() {
   const isDaytime = hours >= 6 && hours < 19;
 
   return (
-    <div className="fixed top-2 right-3 md:top-5 md:right-5 z-50 select-none pointer-events-none">
+    <div className="fixed top-14 md:top-5 right-3 md:right-5 z-50 select-none pointer-events-none">
       <div
         className="flex items-baseline gap-1 font-mono tracking-tight"
         style={{

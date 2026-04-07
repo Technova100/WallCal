@@ -535,7 +535,7 @@ export default function WallCal() {
         </div>
 
         {/* Notes Column */}
-        <div className="w-full md:w-[40%] bg-surface-secondary md:border-l md:border-border-custom p-2 md:p-4 flex flex-col gap-2 md:gap-4 max-h-[30vh] md:max-h-none overflow-y-auto styled-scrollbar">
+        <div className="w-full md:w-[40%] bg-surface-secondary md:border-l md:border-border-custom p-2 md:p-4 flex flex-col gap-2 md:gap-4 max-h-[30vh] md:max-h-none overflow-y-auto styled-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
            
            {/* Monthly Notes */}
            <div className="flex flex-col flex-1">
@@ -563,7 +563,7 @@ export default function WallCal() {
                  </div>
                </>
              ) : (
-               <div className="flex flex-col flex-1 gap-2 overflow-y-auto max-h-[140px] md:max-h-[200px] pr-1 styled-scrollbar">
+               <div className="flex flex-col flex-1 gap-2 overflow-y-auto max-h-[140px] md:max-h-[200px] pr-1 styled-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                  {(monthlyChecklists[monthKey] || []).map(item => (
                    <div key={item.id} className="flex flex-row items-center gap-2 group">
                      <button onClick={() => {
@@ -655,7 +655,7 @@ export default function WallCal() {
             {savedRangeNotes.length > 0 && (
               <div className="flex flex-col pt-3 border-t border-border-custom">
                 <label className="text-[11px] font-bold tracking-wide uppercase text-text-secondary opacity-60 mb-2">Saved Range Notes</label>
-                <div className="flex flex-col gap-2 overflow-y-auto max-h-[140px] md:max-h-[180px] pr-1 styled-scrollbar">
+                <div className="flex flex-col gap-2 overflow-y-auto max-h-[140px] md:max-h-[180px] pr-1 styled-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                   {savedRangeNotes.map(note => (
                     <div key={note.id} className="flex items-start gap-2 group bg-surface rounded-[6px] px-2.5 py-2 border border-border-custom/50 transition-colors hover:border-border-custom">
                        <div className="flex-1 min-w-0">
