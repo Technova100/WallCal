@@ -116,11 +116,11 @@ body {
 .calendar-rope::before {
   content: '';
   position: absolute;
-  top: -100vh;
+  top: -150vh;
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
-  height: 100vh;
+  height: calc(150vh + 35px);
   background: linear-gradient(
     to bottom,
     #8B7355 0%,

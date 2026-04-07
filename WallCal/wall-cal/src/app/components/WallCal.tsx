@@ -362,7 +362,7 @@ export default function WallCal() {
       <div className="flex flex-col md:flex-row w-full bg-surface">
         
         {/* Calendar Column */}
-        <div className="flex-1 p-2 md:p-4 w-full md:w-[60%] flex flex-col relative overflow-hidden">
+        <div className="flex-1 p-2 md:p-4 w-full md:w-[60%] flex flex-col relative overflow-visible">
           {/* Nav */}
           <div className="flex items-center justify-between mb-1 md:mb-2 px-1 md:px-2">
             <button onClick={prevMonth} className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 hover:dark:bg-white/10 transition-all duration-150 hover:scale-110 active:scale-95">
@@ -508,7 +508,7 @@ export default function WallCal() {
 
                      {/* Popover */}
                      {activePopover === cell.dateStr && (
-                       <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 bg-bg-primary border border-border-custom shadow-custom rounded-radius-md p-3 w-[200px] md:w-[240px]">
+                       <div className={cn("absolute left-1/2 -translate-x-1/2 z-50 bg-bg-primary border border-border-custom shadow-custom rounded-radius-md p-3 w-[200px] md:w-[240px]", idx > 27 ? "bottom-full mb-2" : "top-full mt-2")}>
                          <label className="block text-xs uppercase text-text-secondary mb-2 whitespace-nowrap font-bold tracking-wide">Note for {cell.dateStr}</label>
                          <textarea
                            autoFocus
