@@ -25,7 +25,7 @@ export default function DigitalClock() {
   const isDaytime = hours >= 6 && hours < 19;
 
   return (
-    <div className="fixed top-5 right-5 z-50 select-none pointer-events-none">
+    <div className="fixed top-2 right-3 md:top-5 md:right-5 z-50 select-none pointer-events-none">
       <div
         className="flex items-baseline gap-1 font-mono tracking-tight"
         style={{
@@ -35,38 +35,38 @@ export default function DigitalClock() {
         }}
       >
         <span
-          className="text-3xl font-bold transition-colors duration-[2000ms]"
+          className="text-lg md:text-3xl font-bold transition-colors duration-[2000ms]"
           style={{ color: isDaytime ? "rgba(30,30,30,0.75)" : "rgba(220,225,240,0.85)" }}
         >
           {pad(h12)}
         </span>
         <span
-          className="text-3xl font-bold animate-pulse transition-colors duration-[2000ms]"
+          className="text-lg md:text-3xl font-bold animate-pulse transition-colors duration-[2000ms]"
           style={{ color: isDaytime ? "rgba(30,30,30,0.5)" : "rgba(220,225,240,0.6)" }}
         >
           :
         </span>
         <span
-          className="text-3xl font-bold transition-colors duration-[2000ms]"
+          className="text-lg md:text-3xl font-bold transition-colors duration-[2000ms]"
           style={{ color: isDaytime ? "rgba(30,30,30,0.75)" : "rgba(220,225,240,0.85)" }}
         >
           {pad(minutes)}
         </span>
         <span
-          className="text-lg font-bold ml-0.5 transition-colors duration-[2000ms]"
+          className="text-xs md:text-lg font-bold ml-0.5 transition-colors duration-[2000ms]"
           style={{ color: isDaytime ? "rgba(30,30,30,0.4)" : "rgba(220,225,240,0.5)" }}
         >
           {pad(seconds)}
         </span>
         <span
-          className="text-xs font-semibold ml-1 transition-colors duration-[2000ms]"
+          className="text-[9px] md:text-xs font-semibold ml-1 transition-colors duration-[2000ms]"
           style={{ color: isDaytime ? "rgba(30,30,30,0.4)" : "rgba(220,225,240,0.45)" }}
         >
           {ampm}
         </span>
       </div>
       <div
-        className="text-[10px] font-medium text-right mt-0.5 uppercase tracking-widest transition-colors duration-[2000ms]"
+        className="text-[8px] md:text-[10px] font-medium text-right mt-0.5 uppercase tracking-widest transition-colors duration-[2000ms]"
         style={{ color: isDaytime ? "rgba(30,30,30,0.3)" : "rgba(220,225,240,0.3)" }}
       >
         {time.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" })}

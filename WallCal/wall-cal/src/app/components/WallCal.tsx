@@ -335,7 +335,7 @@ export default function WallCal() {
       )}
 
       {/* Header / Hero */}
-      <div className="relative w-full h-[28vh] overflow-hidden">
+      <div className="relative w-full h-[18vh] md:h-[28vh] overflow-hidden">
         
         {/* Img with crossfade effect simplified via absolute images (in ideal, robust way, but simple transition here) */}
         <div className="absolute inset-0 transition-opacity duration-300">
@@ -346,14 +346,14 @@ export default function WallCal() {
         {/* Dark theme toggle */}
         <button 
           onClick={() => setTheme(t => t === "light" ? "dark" : "light")}
-          className="absolute top-8 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition"
+          className="absolute top-3 right-3 md:top-8 md:right-4 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition"
           aria-label="Toggle theme"
         >
           {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
         </button>
 
         {/* Month/Year Badge */}
-        <div className="absolute bottom-4 right-4 bg-black/40 backdrop-blur-md text-white font-bold text-xl px-4 py-2 rounded select-none">
+        <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 bg-black/40 backdrop-blur-md text-white font-bold text-sm md:text-xl px-2 py-1 md:px-4 md:py-2 rounded select-none">
           {year} / {currentDate.toLocaleString('default', { month: 'long' }).toUpperCase()}
         </div>
       </div>
@@ -362,9 +362,9 @@ export default function WallCal() {
       <div className="flex flex-col md:flex-row w-full bg-surface">
         
         {/* Calendar Column */}
-        <div className="flex-1 p-3 md:p-4 w-full md:w-[60%] flex flex-col relative overflow-hidden">
+        <div className="flex-1 p-2 md:p-4 w-full md:w-[60%] flex flex-col relative overflow-hidden">
           {/* Nav */}
-          <div className="flex items-center justify-between mb-2 px-2">
+          <div className="flex items-center justify-between mb-1 md:mb-2 px-1 md:px-2">
             <button onClick={prevMonth} className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 hover:dark:bg-white/10 transition-all duration-150 hover:scale-110 active:scale-95">
               <ChevronLeft size={20} />
             </button>
@@ -423,7 +423,7 @@ export default function WallCal() {
             )}
           >
             {/* Headers */}
-            <div className="grid grid-cols-7 gap-0 mb-2">
+            <div className="grid grid-cols-7 gap-0 mb-1 md:mb-2">
               {['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].map((day, i) => (
                 <div key={day} className={cn(
                   "text-center text-[11px] font-semibold",
@@ -435,7 +435,7 @@ export default function WallCal() {
             </div>
 
             {/* Grid */}
-            <div className="grid grid-cols-7 grid-rows-6 gap-y-0 flex-1">
+            <div className="grid grid-cols-7 grid-rows-6 gap-y-0">
               {gridCells.map((cell, idx) => {
                 const isSelectedStart = cell.dateStr === selectedRange.start;
                 const isSelectedEnd = cell.dateStr === selectedRange.end;
@@ -452,7 +452,7 @@ export default function WallCal() {
                 return (
                   <div 
                     key={cell.dateStr} 
-                    className="relative flex items-center justify-center min-h-[34px] md:min-h-[38px] group"
+                    className="relative flex items-center justify-center min-h-[28px] md:min-h-[38px] group"
                   >
                      {/* In-Range Band Background */}
                      {inRange && cell.isCurrentMonth && (
@@ -468,7 +468,7 @@ export default function WallCal() {
                      {/* The Cell Button */}
                      <button
                        className={cn(
-                         "relative w-8 h-8 md:w-9 md:h-9 flex items-center justify-center font-medium text-[13px] z-10 transition-all duration-150 ease-out",
+                         "relative w-[26px] h-[26px] md:w-9 md:h-9 text-[12px] md:text-[13px] flex items-center justify-center font-medium text-[13px] z-10 transition-all duration-150 ease-out",
                          !cell.isCurrentMonth ? "opacity-30 cursor-default rounded-full" : "cursor-pointer hover:scale-105 active:scale-95",
                          cell.isCurrentMonth && !isSelectedStart && !isSelectedEnd && "hover:bg-accent-10 rounded-full",
                          cell.isCurrentMonth && holdayName && !isSelectedStart && !isSelectedEnd && "text-holiday font-bold bg-[color-mix(in_srgb,var(--color-holiday)_12%,transparent)] border border-[color-mix(in_srgb,var(--color-holiday)_30%,transparent)] rounded-md shadow-sm",
@@ -535,7 +535,7 @@ export default function WallCal() {
         </div>
 
         {/* Notes Column */}
-        <div className="w-full md:w-[40%] bg-surface-secondary md:border-l md:border-border-custom p-3 md:p-4 flex flex-col gap-4">
+        <div className="w-full md:w-[40%] bg-surface-secondary md:border-l md:border-border-custom p-2 md:p-4 flex flex-col gap-2 md:gap-4 max-h-[30vh] md:max-h-none overflow-y-auto styled-scrollbar">
            
            {/* Monthly Notes */}
            <div className="flex flex-col flex-1">
