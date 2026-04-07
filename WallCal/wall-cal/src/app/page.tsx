@@ -7,7 +7,7 @@ export default function Home() {
     <main className="w-full flex justify-center w-full max-w-7xl relative">
       <SkyBackground />
       <DigitalClock />
-      <div className="w-full max-w-[960px] mx-auto animate-hang calendar-rope relative z-10">
+      <div className="w-full max-w-[960px] mx-auto animate-hang calendar-rope relative z-10 pt-10 md:pt-0">
         <WallCal />
       </div>
     </main>
