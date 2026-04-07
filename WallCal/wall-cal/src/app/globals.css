@@ -1,0 +1,289 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-secondary: #F8F8F8;
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B6B6B;
+  --text-muted: #B0B0B0;
+  --border: #E5E5E5;
+  --accent: #E07A5F;
+  --accent-10: color-mix(in srgb, var(--accent) 10%, transparent);
+  --accent-15: color-mix(in srgb, var(--accent) 15%, transparent);
+  --holiday: #E63946;
+  --shadow: 0 8px 32px rgba(0,0,0,0.12);
+  
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease-out;
+  --transition-slow: 300ms ease-in-out;
+  --transition-accent: 400ms ease;
+}
+
+:root.dark {
+  --bg-primary: #0F0F1A;
+  --surface: #1A1A2E;
+  --surface-secondary: #252540;
+  --text-primary: #E8E8E8;
+  --text-secondary: #9A9AB0;
+  --text-muted: #4A4A60;
+  --border: #2A2A40;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+@theme inline {
+  --color-bg-primary: var(--bg-primary);
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-border-custom: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-10: var(--accent-10);
+  --color-accent-15: var(--accent-15);
+  --color-holiday: var(--holiday);
+  
+  --shadow-custom: var(--shadow);
+  
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color var(--transition-slow), color var(--transition-slow);
+}
+
+/* Base custom classes to match spec */
+.transition-colors-custom {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- Rope + Hanging Animation System --- */
+
+/* Phase 1: Drop in from above + swing settle */
+@keyframes hangDrop {
+  0%   { transform: translateY(-110vh) rotate(0deg); opacity: 0; }
+  30%  { transform: translateY(0)       rotate(8deg); opacity: 1; }
+  45%  { transform: translateY(0)       rotate(-5deg); }
+  58%  { transform: translateY(0)       rotate(3deg); }
+  70%  { transform: translateY(0)       rotate(-1.8deg); }
+  80%  { transform: translateY(0)       rotate(0.8deg); }
+  90%  { transform: translateY(0)       rotate(-0.3deg); }
+  100% { transform: translateY(0)       rotate(0deg); }
+}
+
+/* Phase 2: Gentle idle sway (loops forever after drop) */
+@keyframes idleSway {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(0.6deg); }
+  75%      { transform: rotate(-0.6deg); }
+}
+
+.animate-hang {
+  transform-origin: top center;
+  animation:
+    hangDrop 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    idleSway 6s ease-in-out 2.4s infinite;
+}
+
+/* The rope line drawn via pseudo-element */
+.calendar-rope {
+  position: relative;
+}
+.calendar-rope::before {
+  content: '';
+  position: absolute;
+  top: -100vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    #8B7355 0%,
+    #A0896C 30%,
+    #6B5B45 60%,
+    #8B7355 100%
+  );
+  border-radius: 2px;
+  z-index: 60;
+  box-shadow: 1px 0 2px rgba(0,0,0,0.2);
+}
+
+/* ======================================
+   SPIRAL BINDING — Realistic Wire Coils
+   ====================================== */
+
+/* Container for each spiral coil unit */
+.spiral-coil {
+  position: relative;
+  width: 18px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
+/* The arch — an inverted-U wire loop using borders */
+.spiral-coil::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 28px;
+  border-radius: 8px 8px 0 0;
+  border: 3.5px solid #6bafd6;
+  border-bottom: none;
+  background: transparent;
+  box-shadow:
+    0 0 0 0.5px rgba(0,0,0,0.15),
+    inset 0 2px 3px rgba(255,255,255,0.4),
+    0 2px 5px rgba(0,0,0,0.35);
+  /* Metallic gradient via border-image doesn't work on border-radius,
+     so we use the solid color + box-shadow for 3D effect */
+  z-index: 1;
+}
+
+/* The front wire legs that go down in front of the calendar */
+.spiral-coil::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 18px;
+  background: transparent;
+  border-left: 3.5px solid #5a9fc4;
+  border-right: 3.5px solid #5a9fc4;
+  z-index: 55;
+  box-shadow:
+    -1px 0 2px rgba(0,0,0,0.2),
+    1px 0 2px rgba(0,0,0,0.2);
+}
+
+/* Specular highlight on top of the arch */
+.spiral-coil-highlight {
+  position: absolute;
+  top: 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 12px;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(180, 225, 255, 0.8) 0%,
+    rgba(140, 200, 240, 0.3) 40%,
+    transparent 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* The horizontal bar / calendar top edge that coils pass through */
+.spiral-bar {
+  position: absolute;
+  top: 23px;
+  left: -2px;
+  right: -2px;
+  height: 9px;
+  background: linear-gradient(
+    to bottom,
+    #a0a6ae 0%,
+    #8a9098 35%,
+    #747b84 65%,
+    #626970 100%
+  );
+  z-index: 2;
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  border-radius: 1px;
+}
+
+/* Center hanging clip */
+.hanging-clip {
+  position: relative;
+  width: 28px;
+  height: 48px;
+  flex-shrink: 0;
+  z-index: 5;
+}
+
+/* The clip wire — U-shaped dark metal that extends above */
+.hanging-clip-wire {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 42px;
+  border: 3.5px solid;
+  border-color: #3a3a3e;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  background: transparent;
+  z-index: 6;
+  box-shadow:
+    0 0 0 0.5px rgba(0,0,0,0.1),
+    inset 0 1px 3px rgba(255,255,255,0.15),
+    0 2px 6px rgba(0,0,0,0.4);
+}
+
+/* Specular sheen on the clip */
+.hanging-clip-wire::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 16px;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.2) 0%,
+    transparent 100%
+  );
+}
+
+/* Semicircular punch hole in the calendar for hanging */
+.hanging-hole {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.5),
+    inset 0 -1px 3px rgba(255,255,255,0.1);
+  z-index: 4;
+  transition: background-color var(--transition-slow);
+}
