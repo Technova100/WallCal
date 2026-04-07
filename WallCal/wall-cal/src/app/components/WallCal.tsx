@@ -289,7 +289,7 @@ export default function WallCal() {
 
   return (
     <div 
-      className="w-full max-w-[960px] mx-auto z-0 relative pt-8 max-h-[calc(100vh-6rem)]"
+      className="w-full max-w-[960px] mx-auto z-0 relative pt-4 md:pt-8 max-h-[calc(100vh-6rem)]"
       style={{
         "--accent": currentMonthData.accent,
       } as React.CSSProperties}
