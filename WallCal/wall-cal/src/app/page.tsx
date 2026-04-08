@@ -1,15 +1,20 @@
 import WallCal from "./components/WallCal";
 import SkyBackground from "./components/SkyBackground";
 import DigitalClock from "./components/DigitalClock";
+import { ThemeProvider } from "./components/ThemeContext";
 
 export default function Home() {
   return (
-    <main className="w-full flex justify-center w-full max-w-7xl relative h-[100dvh] overflow-hidden md:overflow-visible">
-      <SkyBackground />
-      <DigitalClock />
-      <div className="w-full max-w-[960px] mx-auto animate-hang calendar-rope relative z-10 mt-24 md:mt-0 pb-4 h-[calc(100dvh-6rem)] md:h-auto flex flex-col justify-start">
-        <WallCal />
-      </div>
-    </main>
+    <ThemeProvider>
+      <main className="relative flex h-dvh w-full max-w-7xl justify-center overflow-hidden md:overflow-visible">
+        <SkyBackground />
+        <DigitalClock />
+        {/* Standalone rope for mobile — outside the transform context so fixed positioning works */}
+        <div className="mobile-rope" />
+        <div className="calendar-rope relative z-10 mx-auto mt-8 flex h-[calc(100dvh-4.25rem)] w-full max-w-240 flex-col justify-start pb-3 animate-hang sm:mt-8 sm:h-[calc(100dvh-5rem)] md:mt-0 md:h-auto md:pb-4">
+          <WallCal />
+        </div>
+      </main>
+    </ThemeProvider>
   );
 }

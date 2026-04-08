@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useCallback } from "react";
+import { useTheme } from "./ThemeContext";
 
 // --- Time helpers ---
 function getTimePhase(hour: number): "night" | "dawn" | "morning" | "day" | "evening" | "dusk" {
@@ -30,11 +31,18 @@ interface Star {
   brightness: number;
 }
 
+// Sky gradients for explicit theme overrides
+const OVERRIDE_DAY: string[]   = ["#2e8bc0", "#5fb3e0", "#a8daee"];
+const OVERRIDE_NIGHT: string[] = ["#0a0e27", "#0d1333", "#111a3a"];
+
 export default function SkyBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
   const animRef = useRef<number>(0);
-  const [phase, setPhase] = useState<string>("day");
+  const { theme } = useTheme();
+  // Keep a ref so the draw loop can read the latest theme without re-mounting
+  const themeRef = useRef(theme);
+  useEffect(() => { themeRef.current = theme; }, [theme]);
 
   // Generate stars once
   const generateStars = useCallback((w: number, h: number): Star[] => {
@@ -75,10 +83,18 @@ export default function SkyBackground() {
     const draw = () => {
       const now = new Date();
       const hour = now.getHours();
-      const currentPhase = getTimePhase(hour);
-      setPhase(currentPhase);
+      const naturalPhase = getTimePhase(hour);
 
-      const colors = SKY_GRADIENTS[currentPhase];
+      // If user has explicitly chosen a theme, override the sky
+      const overrideTheme = themeRef.current;
+      const currentPhase = overrideTheme === "dark" ? "night"
+                         : overrideTheme === "light" ? "day"
+                         : naturalPhase;
+
+      const colors =
+        overrideTheme === "dark"  ? OVERRIDE_NIGHT :
+        overrideTheme === "light" ? OVERRIDE_DAY   :
+        SKY_GRADIENTS[currentPhase];
       
       // Sky gradient
       const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
