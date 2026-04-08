@@ -31,6 +31,16 @@ interface Star {
   brightness: number;
 }
 
+interface Cloud {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  speed: number;
+  opacity: number;
+  puff: number[];
+}
+
 // Sky gradients for explicit theme overrides
 const OVERRIDE_DAY: string[]   = ["#2e8bc0", "#5fb3e0", "#a8daee"];
 const OVERRIDE_NIGHT: string[] = ["#0a0e27", "#0d1333", "#111a3a"];
@@ -38,6 +48,7 @@ const OVERRIDE_NIGHT: string[] = ["#0a0e27", "#0d1333", "#111a3a"];
 export default function SkyBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
+  const cloudsRef = useRef<Cloud[]>([]);
   const animRef = useRef<number>(0);
   const { theme } = useTheme();
   // Keep a ref so the draw loop can read the latest theme without re-mounting
@@ -61,6 +72,30 @@ export default function SkyBackground() {
     return stars;
   }, []);
 
+  const generateClouds = useCallback((w: number, h: number): Cloud[] => {
+    const clouds: Cloud[] = [];
+    const count = Math.max(6, Math.floor(w / 260));
+    for (let i = 0; i < count; i++) {
+      const cw = 90 + Math.random() * 140;
+      const ch = cw * (0.32 + Math.random() * 0.14);
+      clouds.push({
+        x: Math.random() * (w + 200) - 100,
+        y: h * (0.08 + Math.random() * 0.35),
+        w: cw,
+        h: ch,
+        speed: 0.06 + Math.random() * 0.12,
+        opacity: 0.14 + Math.random() * 0.16,
+        puff: [
+          0.2 + Math.random() * 0.2,
+          0.3 + Math.random() * 0.2,
+          0.4 + Math.random() * 0.2,
+          0.5 + Math.random() * 0.2,
+        ],
+      });
+    }
+    return clouds;
+  }, []);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -76,6 +111,7 @@ export default function SkyBackground() {
       canvas.width = w;
       canvas.height = h;
       starsRef.current = generateStars(w, h);
+      cloudsRef.current = generateClouds(w, h);
     };
     resize();
     window.addEventListener("resize", resize);
@@ -233,6 +269,35 @@ export default function SkyBackground() {
         ctx.fill();
       }
 
+      // Clouds (light/day mode)
+      if (currentPhase === "day") {
+        cloudsRef.current.forEach((cloud, i) => {
+          const driftX = (t * cloud.speed * 20 + i * 37) % (w + cloud.w * 2) - cloud.w;
+          const wobbleY = Math.sin(t * 0.25 + i) * 3;
+          const cx = driftX;
+          const cy = cloud.y + wobbleY;
+
+          const cloudGrad = ctx.createLinearGradient(cx, cy, cx, cy + cloud.h);
+          cloudGrad.addColorStop(0, `rgba(255, 255, 255, ${cloud.opacity + 0.05})`);
+          cloudGrad.addColorStop(1, `rgba(238, 245, 255, ${cloud.opacity})`);
+          ctx.fillStyle = cloudGrad;
+
+          cloud.puff.forEach((p, puffIndex) => {
+            const px = cx + cloud.w * (0.18 + puffIndex * 0.2);
+            const py = cy + cloud.h * (0.65 - p * 0.35);
+            const rx = cloud.w * (0.22 + p * 0.1);
+            const ry = cloud.h * (0.4 + p * 0.25);
+            ctx.beginPath();
+            ctx.ellipse(px, py, rx, ry, 0, 0, Math.PI * 2);
+            ctx.fill();
+          });
+
+          ctx.beginPath();
+          ctx.roundRect(cx + cloud.w * 0.18, cy + cloud.h * 0.5, cloud.w * 0.64, cloud.h * 0.38, cloud.h * 0.18);
+          ctx.fill();
+        });
+      }
+
       // Shooting star (rare, night only)
       if (currentPhase === "night" && Math.random() < 0.002) {
         const sx = Math.random() * w * 0.8;
@@ -259,7 +324,7 @@ export default function SkyBackground() {
       cancelAnimationFrame(animRef.current);
       window.removeEventListener("resize", resize);
     };
-  }, [generateStars]);
+  }, [generateStars, generateClouds]);
 
   return (
     <canvas

@@ -351,11 +351,11 @@ export default function WallCal() {
           <div className="flex-1 p-2 md:p-4 w-full md:w-[60%] flex flex-col relative overflow-visible">
             {/* Nav */}
             <div className="flex items-center justify-between mb-1 md:mb-2 px-1 md:px-2">
-              <button onClick={prevMonth} className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 hover:dark:bg-white/10 transition-all duration-150 hover:scale-110 active:scale-95">
+              <button onClick={prevMonth} className="w-9 h-9 rounded-full flex items-center justify-center border border-transparent hover:bg-black/5 hover:dark:bg-white/10 hover:border-border-custom focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 focus-visible:ring-offset-1 focus-visible:ring-offset-bg-primary transition-all duration-150 hover:scale-110 active:scale-95">
                 <ChevronLeft size={20} />
               </button>
               <div className="flex items-center gap-2">
-                <div className="relative flex items-center bg-accent/5 hover:bg-accent/15 border border-accent/10 dark:border-white/5 rounded-md px-2 py-0.5 transition-colors cursor-pointer group shadow-sm">
+                <div className="relative flex items-center bg-accent/20 hover:bg-accent/30 border border-accent/45 dark:border-white/10 rounded-md px-2 py-0.5 transition-colors cursor-pointer group shadow-sm">
                   <select
                     value={currentDate.getMonth()}
                     onChange={(e) => {
@@ -363,7 +363,7 @@ export default function WallCal() {
                       newDate.setMonth(parseInt(e.target.value));
                       setCurrentDate(newDate);
                     }}
-                    className="bg-transparent font-bold text-[17px] cursor-pointer outline-none text-text-primary border-none appearance-none pr-5 z-10 w-full"
+                    className="bg-transparent font-bold text-[17px] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent/80 focus-visible:ring-offset-1 focus-visible:ring-offset-bg-primary text-text-primary border-none appearance-none pr-5 z-10 w-full"
                   >
                     {Array.from({ length: 12 }).map((_, i) => {
                       const d = new Date(2020, i, 1);
@@ -375,7 +375,7 @@ export default function WallCal() {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
                   </div>
                 </div>
-                <div className="relative flex items-center bg-accent/5 hover:bg-accent/15 border border-accent/10 dark:border-white/5 rounded-md px-2 py-0.5 transition-colors cursor-pointer group shadow-sm">
+                <div className="relative flex items-center bg-accent/20 hover:bg-accent/30 border border-accent/45 dark:border-white/10 rounded-md px-2 py-0.5 transition-colors cursor-pointer group shadow-sm">
                   <select
                     value={year}
                     onChange={(e) => {
@@ -383,7 +383,7 @@ export default function WallCal() {
                       newDate.setFullYear(parseInt(e.target.value));
                       setCurrentDate(newDate);
                     }}
-                    className="bg-transparent font-bold text-[17px] cursor-pointer outline-none text-accent border-none appearance-none pr-5 z-10 w-full"
+                    className="bg-transparent font-bold text-[17px] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent/80 focus-visible:ring-offset-1 focus-visible:ring-offset-bg-primary text-accent border-none appearance-none pr-5 z-10 w-full"
                   >
                     {Array.from({ length: 11 }).map((_, i) => {
                       const yr = 2023 + i; // 2023 to 2033
@@ -395,7 +395,7 @@ export default function WallCal() {
                   </div>
                 </div>
               </div>
-              <button onClick={nextMonth} className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 hover:dark:bg-white/10 transition-all duration-150 hover:scale-110 active:scale-95">
+              <button onClick={nextMonth} className="w-9 h-9 rounded-full flex items-center justify-center border border-transparent hover:bg-black/5 hover:dark:bg-white/10 hover:border-border-custom focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 focus-visible:ring-offset-1 focus-visible:ring-offset-bg-primary transition-all duration-150 hover:scale-110 active:scale-95">
                 <ChevronRight size={20} />
               </button>
             </div>
@@ -412,8 +412,10 @@ export default function WallCal() {
               <div className="grid grid-cols-7 gap-0 mb-1 md:mb-2">
                 {['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].map((day, i) => (
                   <div key={day} className={cn(
-                    "text-center text-[11px] font-semibold",
-                    (i === 5 || i === 6) ? "text-accent" : "text-text-secondary"
+                    "text-center text-[11px] font-bold tracking-[0.02em]",
+                    i === 5 && "text-sky-700",
+                    i === 6 && "text-rose-700",
+                    i < 5 && "text-text-primary/80"
                   )}>
                     {day}
                   </div>
@@ -442,30 +444,34 @@ export default function WallCal() {
                     >
                       {/* In-Range Band Background */}
                       {inRange && cell.isCurrentMonth && (
-                        <div className="absolute inset-0 bg-accent-15 w-full h-[36px] top-1/2 -translate-y-1/2"></div>
+                        <div className="absolute inset-0 bg-accent-15 border-y border-accent/20 w-full h-[36px] top-1/2 -translate-y-1/2"></div>
                       )}
                       {isSelectedStart && selectedRange.end && cell.isCurrentMonth && (
-                        <div className="absolute left-1/2 right-0 bg-accent-15 h-[36px] top-1/2 -translate-y-1/2"></div>
+                        <div className="absolute left-1/2 right-0 bg-accent-15 border-y border-accent/20 h-[36px] top-1/2 -translate-y-1/2"></div>
                       )}
                       {isSelectedEnd && selectedRange.start && cell.isCurrentMonth && (
-                        <div className="absolute left-0 right-1/2 bg-accent-15 h-[36px] top-1/2 -translate-y-1/2"></div>
+                        <div className="absolute left-0 right-1/2 bg-accent-15 border-y border-accent/20 h-[36px] top-1/2 -translate-y-1/2"></div>
                       )}
 
                       {/* The Cell Button */}
                       <button
                         className={cn(
-                          "relative w-[26px] h-[26px] md:w-9 md:h-9 text-[12px] md:text-[13px] flex items-center justify-center font-medium text-[13px] z-10 transition-all duration-150 ease-out",
-                          !cell.isCurrentMonth ? "opacity-30 cursor-default rounded-full" : "cursor-pointer hover:scale-105 active:scale-95",
-                          cell.isCurrentMonth && !isSelectedStart && !isSelectedEnd && "hover:bg-accent-10 rounded-full",
+                          "relative w-[26px] h-[26px] md:w-9 md:h-9 text-[12px] md:text-[13px] flex items-center justify-center font-semibold z-10 border transition-all duration-150 ease-out",
+                          !cell.isCurrentMonth ? "cursor-default text-text-secondary/75 border-transparent bg-transparent" : "cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 focus-visible:ring-offset-1 focus-visible:ring-offset-bg-primary",
+                          cell.isCurrentMonth && !isSelectedStart && !isSelectedEnd && !isToday && "border-transparent hover:bg-accent-10 hover:border-accent/35 active:bg-accent-15 rounded-full",
                           cell.isCurrentMonth && holdayName && !isSelectedStart && !isSelectedEnd && "text-holiday font-bold bg-[color-mix(in_srgb,var(--color-holiday)_12%,transparent)] border border-[color-mix(in_srgb,var(--color-holiday)_30%,transparent)] rounded-md shadow-sm",
-                          cell.isCurrentMonth && isSelectedStart && selectedRange.end ? "bg-accent text-white rounded-l-full rounded-r-sm" :
-                            cell.isCurrentMonth && isSelectedStart ? "bg-accent text-white rounded-full" : "",
-                          cell.isCurrentMonth && isSelectedEnd ? "bg-accent text-white rounded-r-full rounded-l-sm" : "",
-                          cell.isCurrentMonth && !isSelectedStart && !isSelectedEnd && isWeekend && !holdayName && "text-accent",
-                          !isSelectedStart && !isSelectedEnd && isToday && "bg-emerald-500 text-white font-bold rounded-full shadow-md"
+                          cell.isCurrentMonth && isSelectedStart && selectedRange.end ? "text-white rounded-l-full rounded-r-sm border-transparent" :
+                            cell.isCurrentMonth && isSelectedStart ? "text-white rounded-full border-transparent" : "",
+                          cell.isCurrentMonth && isSelectedEnd ? "text-white rounded-r-full rounded-l-sm border-transparent" : "",
+                          cell.isCurrentMonth && !isSelectedStart && !isSelectedEnd && isWeekend && !holdayName && idx % 7 === 5 && "text-sky-700",
+                          cell.isCurrentMonth && !isSelectedStart && !isSelectedEnd && isWeekend && !holdayName && idx % 7 === 6 && "text-rose-700",
+                          !isSelectedStart && !isSelectedEnd && isToday && "bg-emerald-500 text-white font-bold rounded-full shadow-md border-emerald-600/80 hover:bg-emerald-600 hover:border-emerald-700/90 hover:shadow-lg"
                         )}
                         style={{
-                          boxShadow: (isSelectedStart || isSelectedEnd) ? `0 2px 8px color-mix(in srgb, var(--accent) 30%, transparent)` : 'none'
+                          backgroundColor: (isSelectedStart || isSelectedEnd)
+                            ? "color-mix(in srgb, var(--accent) 82%, #000 18%)"
+                            : undefined,
+                          boxShadow: (isSelectedStart || isSelectedEnd) ? "0 3px 10px color-mix(in srgb, var(--accent) 36%, transparent)" : 'none'
                         }}
                         onClick={() => cell.isCurrentMonth && handleDateClick(cell.dateStr)}
                         onDoubleClick={() => cell.isCurrentMonth && openPopover(cell.dateStr)}
@@ -487,6 +493,11 @@ export default function WallCal() {
                           {holdayName && (
                             <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:block whitespace-nowrap bg-bg-primary border border-border-custom text-text-primary shadow-lg text-[11px] font-bold px-2.5 py-1 rounded-[6px] pointer-events-none z-50 animate-in fade-in zoom-in-95 duration-150">
                               {holdayName}
+                            </div>
+                          )}
+                          {isToday && (
+                            <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:block whitespace-nowrap bg-emerald-600 text-white shadow-lg text-[11px] font-bold px-2.5 py-1 rounded-[6px] pointer-events-none z-50 animate-in fade-in zoom-in-95 duration-150">
+                              Present Day
                             </div>
                           )}
                         </>

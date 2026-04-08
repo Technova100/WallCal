@@ -3,11 +3,11 @@
 :root {
   --bg-primary: #FFFFFF;
   --surface: #FFFFFF;
-  --surface-secondary: #F8F8F8;
-  --text-primary: #1A1A1A;
-  --text-secondary: #6B6B6B;
-  --text-muted: #B0B0B0;
-  --border: #E5E5E5;
+  --surface-secondary: #F3F5F8;
+  --text-primary: #111827;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  --border: #CBD5E1;
   --accent: #E07A5F;
   --accent-10: color-mix(in srgb, var(--accent) 10%, transparent);
   --accent-15: color-mix(in srgb, var(--accent) 15%, transparent);
