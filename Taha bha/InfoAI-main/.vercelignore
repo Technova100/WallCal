@@ -1,9 +1,0 @@
-backend/
-*.py
-__pycache__/
-*.pyc
-.env
-test_reports/
-tests/
-samples/
-backend_test.py
